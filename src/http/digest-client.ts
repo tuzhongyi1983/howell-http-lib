@@ -1,4 +1,9 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosStatic } from "axios";
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosStatic,
+  AxiosResponse
+} from "axios";
 import { ClientCredentials } from "./credentials";
 import md5 from "js-md5";
 import { sha256 } from "js-sha256";
@@ -43,7 +48,10 @@ export class AxiosDigest {
     );
   }
 
-  public get(path: string, config?: AxiosRequestConfig) {
+  public get<TResult = any>(
+    path: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<TResult>> {
     return this.axios
       .get(path, config)
       .catch(this.getWwwAuth)
@@ -57,47 +65,91 @@ export class AxiosDigest {
       });
   }
 
-  public post(path: string, data?: any, config?: AxiosRequestConfig) {
+  public post<TRequest = any, TResult = any>(
+    path: string,
+    data?: TRequest,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<TResult>> {
     return this.axios
       .post(path, data, config)
       .catch(this.getWwwAuth)
       .then(wwwAuth => {
-        const c = this.getAuthHeader(wwwAuth, "POST", path, config);
-        return this.axios.post(path, data, c);
+        const { reAuth, authenticateHeader } = wwwAuth;
+        if (reAuth === true) {
+          const c = this.getAuthHeader(
+            authenticateHeader,
+            "POST",
+            path,
+            config
+          );
+          return this.axios.post(path, data, c);
+        }
+        return wwwAuth;
       });
   }
 
-  public put(path: string, data?: any, config?: AxiosRequestConfig) {
+  public put<TRequest = any, TResult = any>(
+    path: string,
+    data?: TRequest,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<TResult>> {
     return this.axios
       .put(path, data, config)
       .catch(this.getWwwAuth)
       .then(wwwAuth => {
-        const c = this.getAuthHeader(wwwAuth, "PUT", path, config);
-        return this.axios.put(path, data, c);
+        const { reAuth, authenticateHeader } = wwwAuth;
+        if (reAuth === true) {
+          const c = this.getAuthHeader(authenticateHeader, "PUT", path, config);
+          return this.axios.put(path, data, c);
+        }
+        return wwwAuth;
       });
   }
 
-  public delete(path: string, config?: AxiosRequestConfig) {
+  public delete<TResult = any>(
+    path: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<TResult>> {
     return this.axios
       .delete(path, config)
       .catch(this.getWwwAuth)
       .then(wwwAuth => {
-        const c = this.getAuthHeader(wwwAuth, "DELETE", path, config);
-        return this.axios.delete(path, c);
+        const { reAuth, authenticateHeader } = wwwAuth;
+        if (reAuth === true) {
+          const c = this.getAuthHeader(
+            authenticateHeader,
+            "DELETE",
+            path,
+            config
+          );
+          return this.axios.delete(path, c);
+        }
+        return wwwAuth;
       });
   }
 
-  public head(path: string, config?: AxiosRequestConfig) {
+  public head<TResult = any>(
+    path: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<TResult>> {
     return this.axios
       .head(path, config)
       .catch(this.getWwwAuth)
       .then(wwwAuth => {
-        const c = this.getAuthHeader(wwwAuth, "HEAD", path, config);
-        return this.axios.head(path, c);
+        const { reAuth, authenticateHeader } = wwwAuth;
+        if (reAuth === true) {
+          const c = this.getAuthHeader(wwwAuth, "HEAD", path, config);
+          return this.axios.head(path, c);
+        }
+        return wwwAuth;
       });
   }
 
-  public patch(path: string, data?: any, config?: AxiosRequestConfig) {
+  public patch<TRequest = any, TResult = any>(
+    path: string,
+    data?: TRequest,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<TResult>> {
     return this.axios
       .patch(path, data, config)
       .catch(this.getWwwAuth)

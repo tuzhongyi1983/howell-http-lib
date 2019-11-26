@@ -12,7 +12,7 @@ module.exports = {
     "^.+\\.js$": "babel-jest"
   },
   moduleNameMapper: {
-    "@appname/(.*)": "<rootDir>/src/modules/$1"
+    "@appname/(.*)": "<rootDir>/src/$1"
   }
   // All imported modules in your tests should be mocked automatically
   // automock: false,

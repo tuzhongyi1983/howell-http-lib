@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6", //将编译的.ts文件编译为指定标准js
+    "target": "es5", //将编译的.ts文件编译为指定标准js
     "module": "commonjs", //模块规范
     "allowJs": true,
     // "strict": true,
@@ -16,7 +16,7 @@
     "lib": ["es6", "dom"], //定义编译时依赖
     "typeRoots": ["node_modules/@types"], //定义类型定义文件的根目录
     "outDir": "./dist", //编译输出文件目录，默认等于rootDir
-    // "rootDir": "./src", //源代码目录在这个目录里编写你的ts文件
+    "rootDir": "./src", //源代码目录在这个目录里编写你的ts文件
     "baseUrl": "./",
     "strictNullChecks": true,
 
@@ -33,6 +33,8 @@
     "test",
     "**/*.test.ts", //忽略指定类型文件
     "babel.config.js",
-    "jest.config.js"
+    "jest.config.js",
+    "index.js",
+    "index.js.map"
   ]
 }

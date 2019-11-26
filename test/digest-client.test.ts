@@ -1,5 +1,4 @@
 import { AxiosDigest } from "../src/http/digest-client";
-import md5 = require("js-md5");
 
 const rand = (): number => {
   return Math.floor(Math.random() * 0x100);

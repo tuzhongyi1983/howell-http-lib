@@ -1,8 +1,7 @@
 {
   "name": "howell-http-lib",
-  "version": "1.0.0",
   "description": "Howell-HTTP网络工具库",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "directories": {
     "test": "test"
   },
@@ -30,6 +29,18 @@
     "http",
     "howell"
   ],
+  "files": [
+    "dist/**",
+    "howell-http-lib.d.ts",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuzhongyi1983/howell-http-lib.git"
+  },
   "author": "Tzy",
-  "license": "ISC"
+  "license": "Howell",
+  "typings": "./howell-http-lib.d.ts",
+  "version": "1.0.10"
 }
