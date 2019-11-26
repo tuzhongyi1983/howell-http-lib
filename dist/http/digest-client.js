@@ -228,15 +228,4 @@ var AxiosDigestInstance = (function () {
     return AxiosDigestInstance;
 }());
 exports.AxiosDigestInstance = AxiosDigestInstance;
-var AxiosDigestStatic = (function () {
-    function AxiosDigestStatic() {
-    }
-    AxiosDigestStatic.prototype.create = function (username, passwd, webBrowserAuth, customAxios) {
-        return new AxiosDigestInstance(username, passwd, webBrowserAuth, customAxios);
-    };
-    return AxiosDigestStatic;
-}());
-exports.AxiosDigestStatic = AxiosDigestStatic;
-var AxiosDigest = new AxiosDigestStatic();
-exports.default = AxiosDigest;
 //# sourceMappingURL=digest-client.js.map

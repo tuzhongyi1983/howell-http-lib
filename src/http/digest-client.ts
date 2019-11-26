@@ -8,7 +8,7 @@ import { ClientCredentials } from "./credentials";
 import md5 from "js-md5";
 import { sha256 } from "js-sha256";
 import { sha512, sha512_256 } from "js-sha512";
-
+/**Http认证客户端静态 */
 export class AxiosDigestInstance {
   private readonly axios: AxiosInstance | AxiosStatic;
   private username: string;
@@ -28,7 +28,6 @@ export class AxiosDigestInstance {
       webBrowserAuth
     );
   }
-
   set clientCredentials(credentials: ClientCredentials) {
     this.username = credentials.username;
     this.passwd = credentials.passwd;
@@ -179,17 +178,6 @@ export class AxiosDigestInstance {
     throw r;
   };
 
-  /*private getWwwAuth(this: AxiosDigest, r: any): any {
-    const { status } = r.response;
-    if (status === 401 || (this.webBrowserAuth === true && status === 403)) {
-      return {
-        reAuth: true,
-        authenticateHeader: r.response.headers["www-authenticate"]
-      };
-    }
-    throw r;
-  }*/
-
   private getAuthHeader(
     authHeader: string,
     method: string,
@@ -303,9 +291,8 @@ export class AxiosDigestInstance {
     return config;
   }
 }
-/**Http认证客户端静态工具 */
-export class AxiosDigestStatic {
-  /**创建Http认证客户端 */
+
+/*export class AxiosDigestStatic {
   public create(
     username: string,
     passwd: string,
@@ -322,4 +309,4 @@ export class AxiosDigestStatic {
 }
 
 const AxiosDigest: AxiosDigestStatic = new AxiosDigestStatic();
-export default AxiosDigest;
+export default AxiosDigest;*/

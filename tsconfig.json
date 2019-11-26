@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "es5", //将编译的.ts文件编译为指定标准js
     "module": "commonjs", //模块规范
-    "allowJs": true,
+    "declaration": true,
+    "allowJs": false,
     // "strict": true,
     "noImplicitAny": false,
     "sourceMap": true, //生成资源映射，以便于调试

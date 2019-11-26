@@ -31,7 +31,6 @@
   ],
   "files": [
     "dist/**",
-    "howell-http-lib.d.ts",
     "README.md",
     "CHANGELOG.md"
   ],
@@ -41,6 +40,6 @@
   },
   "author": "Tzy",
   "license": "Howell",
-  "typings": "./howell-http-lib.d.ts",
-  "version": "1.0.10"
+  "typings": "./dist/index.d.ts",
+  "version": "1.0.15"
 }
