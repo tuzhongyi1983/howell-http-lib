@@ -9,7 +9,7 @@ import md5 from "js-md5";
 import { sha256 } from "js-sha256";
 import { sha512, sha512_256 } from "js-sha512";
 
-export class AxiosDigest {
+export class AxiosDigestInstance {
   private readonly axios: AxiosInstance | AxiosStatic;
   private username: string;
   private passwd: string;
@@ -303,3 +303,23 @@ export class AxiosDigest {
     return config;
   }
 }
+/**Http认证客户端静态工具 */
+export class AxiosDigestStatic {
+  /**创建Http认证客户端 */
+  public create(
+    username: string,
+    passwd: string,
+    webBrowserAuth?: boolean,
+    customAxios?: AxiosInstance | AxiosStatic
+  ): AxiosDigestInstance {
+    return new AxiosDigestInstance(
+      username,
+      passwd,
+      webBrowserAuth,
+      customAxios
+    );
+  }
+}
+
+const AxiosDigest: AxiosDigestStatic = new AxiosDigestStatic();
+export default AxiosDigest;

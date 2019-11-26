@@ -6,8 +6,8 @@ var credentials_1 = require("./credentials");
 var js_md5_1 = tslib_1.__importDefault(require("js-md5"));
 var js_sha256_1 = require("js-sha256");
 var js_sha512_1 = require("js-sha512");
-var AxiosDigest = (function () {
-    function AxiosDigest(username, passwd, webBrowserAuth, customAxios) {
+var AxiosDigestInstance = (function () {
+    function AxiosDigestInstance(username, passwd, webBrowserAuth, customAxios) {
         var _this = this;
         this.getWwwAuth = function (r) {
             var status = r.response.status;
@@ -22,7 +22,7 @@ var AxiosDigest = (function () {
         this.axios = customAxios !== undefined ? customAxios : axios_1.default;
         this.clientCredentials = new credentials_1.ClientCredentials(username, passwd, webBrowserAuth);
     }
-    Object.defineProperty(AxiosDigest.prototype, "clientCredentials", {
+    Object.defineProperty(AxiosDigestInstance.prototype, "clientCredentials", {
         get: function () {
             return new credentials_1.ClientCredentials(this.username, this.passwd, this.webBrowserAuth);
         },
@@ -40,7 +40,7 @@ var AxiosDigest = (function () {
         enumerable: true,
         configurable: true
     });
-    AxiosDigest.prototype.get = function (path, config) {
+    AxiosDigestInstance.prototype.get = function (path, config) {
         var _this = this;
         return this.axios
             .get(path, config)
@@ -54,7 +54,7 @@ var AxiosDigest = (function () {
             return wwwAuth;
         });
     };
-    AxiosDigest.prototype.post = function (path, data, config) {
+    AxiosDigestInstance.prototype.post = function (path, data, config) {
         var _this = this;
         return this.axios
             .post(path, data, config)
@@ -68,7 +68,7 @@ var AxiosDigest = (function () {
             return wwwAuth;
         });
     };
-    AxiosDigest.prototype.put = function (path, data, config) {
+    AxiosDigestInstance.prototype.put = function (path, data, config) {
         var _this = this;
         return this.axios
             .put(path, data, config)
@@ -82,7 +82,7 @@ var AxiosDigest = (function () {
             return wwwAuth;
         });
     };
-    AxiosDigest.prototype.delete = function (path, config) {
+    AxiosDigestInstance.prototype.delete = function (path, config) {
         var _this = this;
         return this.axios
             .delete(path, config)
@@ -96,7 +96,7 @@ var AxiosDigest = (function () {
             return wwwAuth;
         });
     };
-    AxiosDigest.prototype.head = function (path, config) {
+    AxiosDigestInstance.prototype.head = function (path, config) {
         var _this = this;
         return this.axios
             .head(path, config)
@@ -110,7 +110,7 @@ var AxiosDigest = (function () {
             return wwwAuth;
         });
     };
-    AxiosDigest.prototype.patch = function (path, data, config) {
+    AxiosDigestInstance.prototype.patch = function (path, data, config) {
         var _this = this;
         return this.axios
             .patch(path, data, config)
@@ -124,7 +124,7 @@ var AxiosDigest = (function () {
             return wwwAuth;
         });
     };
-    AxiosDigest.prototype.getAuthHeader = function (authHeader, method, url, config) {
+    AxiosDigestInstance.prototype.getAuthHeader = function (authHeader, method, url, config) {
         var paramsString = authHeader
             .split(/\s*,?\s*Digest\s*/)
             .filter(function (v) { return v !== ""; });
@@ -225,7 +225,18 @@ var AxiosDigest = (function () {
         config.headers.Authorization = auth;
         return config;
     };
-    return AxiosDigest;
+    return AxiosDigestInstance;
 }());
-exports.AxiosDigest = AxiosDigest;
+exports.AxiosDigestInstance = AxiosDigestInstance;
+var AxiosDigestStatic = (function () {
+    function AxiosDigestStatic() {
+    }
+    AxiosDigestStatic.prototype.create = function (username, passwd, webBrowserAuth, customAxios) {
+        return new AxiosDigestInstance(username, passwd, webBrowserAuth, customAxios);
+    };
+    return AxiosDigestStatic;
+}());
+exports.AxiosDigestStatic = AxiosDigestStatic;
+var AxiosDigest = new AxiosDigestStatic();
+exports.default = AxiosDigest;
 //# sourceMappingURL=digest-client.js.map

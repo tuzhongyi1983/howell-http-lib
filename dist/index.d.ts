@@ -18,7 +18,7 @@ export interface ClientCredentials extends UsernamePassword {
   webBrowserAuth: boolean;
 }
 
-export interface AxiosDigest {
+export interface AxiosDigestInstance {
   (
     username: string,
     passwd: string,
@@ -54,3 +54,16 @@ export interface AxiosDigest {
     config?: AxiosRequestConfig
   ): Promise<AxiosResponse<TResult>>;
 }
+
+export interface AxiosDigestStatic {
+  create(
+    username: string,
+    passwd: string,
+    webBrowserAuth?: boolean,
+    customAxios?: AxiosInstance | AxiosStatic
+  ): AxiosDigestInstance;
+}
+
+export declare const AxiosDigest: AxiosDigestStatic;
+
+export default AxiosDigest;

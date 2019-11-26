@@ -1,3 +1,2 @@
-import { AxiosDigest } from "./http/digest-client";
-import { ClientCredentials, UsernamePassword } from "./http/credentials";
-export { AxiosDigest, ClientCredentials, UsernamePassword };
+export * from "./http/digest-client";
+export * from "./http/credentials";
