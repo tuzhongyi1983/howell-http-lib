@@ -1,17 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var axios_1 = tslib_1.__importDefault(require("axios"));
-var credentials_1 = require("./credentials");
-var js_md5_1 = tslib_1.__importDefault(require("js-md5"));
-var js_sha256_1 = require("js-sha256");
-var js_sha512_1 = require("js-sha512");
-var AxiosDigestInstance = (function () {
-    function AxiosDigestInstance(username, passwd, webBrowserAuth, customAxios) {
-        var _this = this;
-        this.getWwwAuth = function (r) {
-            var status = r.response.status;
-            if (status === 401 || (_this.webBrowserAuth === true && status === 403)) {
+const tslib_1 = require("tslib");
+const axios_1 = tslib_1.__importDefault(require("axios"));
+const credentials_1 = require("./credentials");
+const js_md5_1 = tslib_1.__importDefault(require("js-md5"));
+const js_sha256_1 = require("js-sha256");
+const js_sha512_1 = require("js-sha512");
+class AxiosDigestInstance {
+    constructor(username, passwd, webBrowserAuth, customAxios) {
+        this.getWwwAuth = (r) => {
+            const { status } = r.response;
+            if (status === 401 || (this.webBrowserAuth === true && status === 403)) {
                 return {
                     reAuth: true,
                     authenticateHeader: r.response.headers["www-authenticate"]
@@ -22,148 +21,134 @@ var AxiosDigestInstance = (function () {
         this.axios = customAxios !== undefined ? customAxios : axios_1.default;
         this.clientCredentials = new credentials_1.ClientCredentials(username, passwd, webBrowserAuth);
     }
-    Object.defineProperty(AxiosDigestInstance.prototype, "clientCredentials", {
-        get: function () {
-            return new credentials_1.ClientCredentials(this.username, this.passwd, this.webBrowserAuth);
-        },
-        set: function (credentials) {
-            this.username = credentials.username;
-            this.passwd = credentials.passwd;
-            this.webBrowserAuth = credentials.webBrowserAuth;
-            if (this.webBrowserAuth === false) {
-                axios_1.default.defaults.headers["X-WebBrowser-Authentication"] = null;
-            }
-            else {
-                axios_1.default.defaults.headers["X-WebBrowser-Authentication"] = "Forbidden";
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    AxiosDigestInstance.prototype.get = function (path, config) {
-        var _this = this;
+    set clientCredentials(credentials) {
+        this.username = credentials.username;
+        this.passwd = credentials.passwd;
+        this.webBrowserAuth = credentials.webBrowserAuth;
+        if (this.webBrowserAuth === false) {
+            axios_1.default.defaults.headers["X-WebBrowser-Authentication"] = null;
+        }
+        else {
+            axios_1.default.defaults.headers["X-WebBrowser-Authentication"] = "Forbidden";
+        }
+    }
+    get clientCredentials() {
+        return new credentials_1.ClientCredentials(this.username, this.passwd, this.webBrowserAuth);
+    }
+    get(path, config) {
         return this.axios
             .get(path, config)
             .catch(this.getWwwAuth)
-            .then(function (wwwAuth) {
-            var reAuth = wwwAuth.reAuth, authenticateHeader = wwwAuth.authenticateHeader;
+            .then(wwwAuth => {
+            const { reAuth, authenticateHeader } = wwwAuth;
             if (reAuth === true) {
-                var c = _this.getAuthHeader(authenticateHeader, "GET", path, config);
-                return _this.axios.get(path, c);
+                const c = this.getAuthHeader(authenticateHeader, "GET", path, config);
+                return this.axios.get(path, c);
             }
             return wwwAuth;
         });
-    };
-    AxiosDigestInstance.prototype.post = function (path, data, config) {
-        var _this = this;
+    }
+    post(path, data, config) {
         return this.axios
             .post(path, data, config)
             .catch(this.getWwwAuth)
-            .then(function (wwwAuth) {
-            var reAuth = wwwAuth.reAuth, authenticateHeader = wwwAuth.authenticateHeader;
+            .then(wwwAuth => {
+            const { reAuth, authenticateHeader } = wwwAuth;
             if (reAuth === true) {
-                var c = _this.getAuthHeader(authenticateHeader, "POST", path, config);
-                return _this.axios.post(path, data, c);
+                const c = this.getAuthHeader(authenticateHeader, "POST", path, config);
+                return this.axios.post(path, data, c);
             }
             return wwwAuth;
         });
-    };
-    AxiosDigestInstance.prototype.put = function (path, data, config) {
-        var _this = this;
+    }
+    put(path, data, config) {
         return this.axios
             .put(path, data, config)
             .catch(this.getWwwAuth)
-            .then(function (wwwAuth) {
-            var reAuth = wwwAuth.reAuth, authenticateHeader = wwwAuth.authenticateHeader;
+            .then(wwwAuth => {
+            const { reAuth, authenticateHeader } = wwwAuth;
             if (reAuth === true) {
-                var c = _this.getAuthHeader(authenticateHeader, "PUT", path, config);
-                return _this.axios.put(path, data, c);
+                const c = this.getAuthHeader(authenticateHeader, "PUT", path, config);
+                return this.axios.put(path, data, c);
             }
             return wwwAuth;
         });
-    };
-    AxiosDigestInstance.prototype.delete = function (path, config) {
-        var _this = this;
+    }
+    delete(path, config) {
         return this.axios
             .delete(path, config)
             .catch(this.getWwwAuth)
-            .then(function (wwwAuth) {
-            var reAuth = wwwAuth.reAuth, authenticateHeader = wwwAuth.authenticateHeader;
+            .then(wwwAuth => {
+            const { reAuth, authenticateHeader } = wwwAuth;
             if (reAuth === true) {
-                var c = _this.getAuthHeader(authenticateHeader, "DELETE", path, config);
-                return _this.axios.delete(path, c);
+                const c = this.getAuthHeader(authenticateHeader, "DELETE", path, config);
+                return this.axios.delete(path, c);
             }
             return wwwAuth;
         });
-    };
-    AxiosDigestInstance.prototype.head = function (path, config) {
-        var _this = this;
+    }
+    head(path, config) {
         return this.axios
             .head(path, config)
             .catch(this.getWwwAuth)
-            .then(function (wwwAuth) {
-            var reAuth = wwwAuth.reAuth, authenticateHeader = wwwAuth.authenticateHeader;
+            .then(wwwAuth => {
+            const { reAuth, authenticateHeader } = wwwAuth;
             if (reAuth === true) {
-                var c = _this.getAuthHeader(wwwAuth, "HEAD", path, config);
-                return _this.axios.head(path, c);
+                const c = this.getAuthHeader(wwwAuth, "HEAD", path, config);
+                return this.axios.head(path, c);
             }
             return wwwAuth;
         });
-    };
-    AxiosDigestInstance.prototype.patch = function (path, data, config) {
-        var _this = this;
+    }
+    patch(path, data, config) {
         return this.axios
             .patch(path, data, config)
             .catch(this.getWwwAuth)
-            .then(function (wwwAuth) {
-            var reAuth = wwwAuth.reAuth, authenticateHeader = wwwAuth.authenticateHeader;
+            .then(wwwAuth => {
+            const { reAuth, authenticateHeader } = wwwAuth;
             if (reAuth === true) {
-                var c = _this.getAuthHeader(authenticateHeader, "PATCH", path, config);
-                return _this.axios.patch(path, data, c);
+                const c = this.getAuthHeader(authenticateHeader, "PATCH", path, config);
+                return this.axios.patch(path, data, c);
             }
             return wwwAuth;
         });
-    };
-    AxiosDigestInstance.prototype.getAuthHeader = function (authHeader, method, url, config) {
-        var paramsString = authHeader
+    }
+    getAuthHeader(authHeader, method, url, config) {
+        const paramsString = authHeader
             .split(/\s*,?\s*Digest\s*/)
-            .filter(function (v) { return v !== ""; });
-        var paramsArray = paramsString.map(function (v) {
-            return v.split(/\s*,(?=(?:[^"]*"[^"]*")*)\s*/);
-        });
-        var paramsKvArray = paramsArray.map(function (v) {
-            return v.map(function (value) {
-                var ret = value
+            .filter(v => v !== "");
+        const paramsArray = paramsString.map(v => v.split(/\s*,(?=(?:[^"]*"[^"]*")*)\s*/));
+        const paramsKvArray = paramsArray.map(v => {
+            return v.map(value => {
+                const ret = value
                     .split(/\s*=(?:(?=[^"]*"[^"]*")|(?!"))\s*/, 2)
-                    .map(function (v2) {
+                    .map(v2 => {
                     return v2.replace(/^"/, "").replace(/"$/, "");
                 });
                 return [ret[0], ret[1]];
             });
         });
-        var paramsMapArray = paramsKvArray.map(function (v) {
-            var t = {};
-            v.forEach(function (w) { return (t[w[0]] = w[1]); });
+        const paramsMapArray = paramsKvArray.map(v => {
+            const t = {};
+            v.forEach(w => (t[w[0]] = w[1]));
             return t;
         });
-        var calams = ["realm", "nonce", "qop", "opaque"];
-        var paramsCalamsOk = paramsMapArray
-            .map(function (v) {
+        const calams = ["realm", "nonce", "qop", "opaque"];
+        const paramsCalamsOk = paramsMapArray
+            .map(v => {
             if (!("algorithm" in v)) {
                 v["algorithm"] = "MD5";
             }
             return v;
         })
-            .filter(function (v) {
-            return ["MD5", "SHA-256", "SHA-512-256", "SHA-512"].findIndex(function (i) { return i === v.algorithm; }) >= 0;
-        })
-            .filter(function (v) { return calams.filter(function (value) { return !(value in v); }).length === 0; })
-            .filter(function (v) { return v.qop.split(/\s*,\s*/).filter(function (v) { return v === "auth"; }).length !== 0; });
+            .filter(v => ["MD5", "SHA-256", "SHA-512-256", "SHA-512"].findIndex(i => i === v.algorithm) >= 0)
+            .filter(v => calams.filter(value => !(value in v)).length === 0)
+            .filter(v => v.qop.split(/\s*,\s*/).filter(v => v === "auth").length !== 0);
         if (paramsCalamsOk.length === 0) {
             throw new Error("Auth params error.");
         }
-        paramsCalamsOk.sort(function (a, b) {
-            var _a = [a.algorithm, b.algorithm].map(function (v) {
+        paramsCalamsOk.sort((a, b) => {
+            const [aEval, bEval] = [a.algorithm, b.algorithm].map(v => {
                 if (v === "MD5")
                     return 0;
                 if (v === "SHA-256")
@@ -171,22 +156,22 @@ var AxiosDigestInstance = (function () {
                 if (v === "SHA-512-256")
                     return 2;
                 return 3;
-            }), aEval = _a[0], bEval = _a[1];
+            });
             return bEval - aEval;
         });
-        var params = paramsCalamsOk[0];
-        var username = this.username;
-        var passwd = this.passwd;
-        var realm = params.realm, nonce = params.nonce, opaque = params.opaque, algorithm = params.algorithm;
-        var uri = url
+        const params = paramsCalamsOk[0];
+        const username = this.username;
+        const passwd = this.passwd;
+        const { realm, nonce, opaque, algorithm } = params;
+        const uri = url
             .split(/^https?:\/\/[^\/]+/)
-            .filter(function (v) { return v !== ""; })[0];
-        var cnonce = Math.random()
+            .filter(v => v !== "")[0];
+        const cnonce = Math.random()
             .toString(32)
             .substring(2);
-        var nc = "0001";
-        var qop = "auth";
-        var hashHex = (function () {
+        const nc = "0001";
+        const qop = "auth";
+        const hashHex = (() => {
             if (algorithm === "MD5")
                 return js_md5_1.default;
             if (algorithm === "SHA-256")
@@ -195,37 +180,36 @@ var AxiosDigestInstance = (function () {
                 return js_sha512_1.sha512_256;
             return js_sha512_1.sha512;
         })();
-        var hashHexArray = function (data) {
+        const hashHexArray = (data) => {
             return hashHex(data.join(":"));
         };
-        var a1 = [username, realm, passwd];
-        var a1hash = hashHexArray(a1);
-        var a2 = [method, uri];
-        var a2hash = hashHexArray(a2);
-        var a3 = [a1hash, nonce, nc, cnonce, qop, a2hash];
-        var response = hashHexArray(a3);
-        var dh = {
-            realm: realm,
-            nonce: nonce,
-            uri: uri,
-            username: username,
-            cnonce: cnonce,
-            nc: nc,
-            qop: qop,
-            algorithm: algorithm,
-            response: response,
-            opaque: opaque
+        const a1 = [username, realm, passwd];
+        const a1hash = hashHexArray(a1);
+        const a2 = [method, uri];
+        const a2hash = hashHexArray(a2);
+        const a3 = [a1hash, nonce, nc, cnonce, qop, a2hash];
+        const response = hashHexArray(a3);
+        const dh = {
+            realm,
+            nonce,
+            uri,
+            username,
+            cnonce,
+            nc,
+            qop,
+            algorithm,
+            response,
+            opaque
         };
-        var auth = "Digest " + Object.keys(dh)
-            .map(function (v) { return v + "=\"" + dh[v] + "\""; })
-            .join(", ");
+        const auth = `Digest ${Object.keys(dh)
+            .map(v => `${v}="${dh[v]}"`)
+            .join(", ")}`;
         if (config === undefined) {
             return { headers: { Authorization: auth } };
         }
         config.headers.Authorization = auth;
         return config;
-    };
-    return AxiosDigestInstance;
-}());
+    }
+}
 exports.AxiosDigestInstance = AxiosDigestInstance;
 //# sourceMappingURL=digest-client.js.map
