@@ -1,5 +1,10 @@
 import { AxiosDigestInstance } from "../src/http/digest-client";
-
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosStatic,
+  AxiosResponse
+} from "axios";
 const rand = (): number => {
   return Math.floor(Math.random() * 0x100);
 };
@@ -10,27 +15,17 @@ const url = "/howell/ver10/data_service/village_system/Villages";
 const base = "http://192.168.21.244:9000/";
 
 //const axios = new AxiosDigestInstance(username, passwd, true);
-const axios = new AxiosDigestInstance(username, passwd, true);
-
+//const axios = new AxiosDigestInstance(username, passwd, true);
+const client = new AxiosDigestInstance(
+  username,
+  passwd,
+  true,
+  axios.create({
+    baseURL: base,
+    timeout: 10000
+  })
+);
 test("MD5", async () => {
-  const a = await axios.get(`${base}${url}`);
+  const a = await client.get(`${url}`);
   expect(a.status).toBe(200);
 });
-/*test("SHA-256", async () => {
-  const a = await axios.get(`${base}${url}SHA-256`);
-  expect(a.status).toBe(200);
-});
-test("SHA-512", async () => {
-  const a = await axios.get(`${base}${url}SHA-512`);
-  expect(a.status).toBe(200);
-});
-const url2 = `/digest-auth/auth-int/${username}/${passwd}/`;
-test("MD5-int (not support)", () => {
-  expect(axios.get(`${base}${url2}MD5`)).rejects.toMatch("error");
-});
-test("SHA-256-int (not support)", () => {
-  expect(axios.get(`${base}${url2}SHA-256`)).rejects.toMatch("error");
-});
-test("SHA-512-int (not support)", () => {
-  expect(axios.get(`${base}${url2}SHA-512`)).rejects.toMatch("error");
-});*/
