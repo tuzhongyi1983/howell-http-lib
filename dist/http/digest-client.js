@@ -26,10 +26,10 @@ class AxiosDigestInstance {
         this.passwd = credentials.passwd;
         this.webBrowserAuth = credentials.webBrowserAuth;
         if (this.webBrowserAuth === false) {
-            axios_1.default.defaults.headers["X-WebBrowser-Authentication"] = null;
+            this.axios.defaults.headers["X-WebBrowser-Authentication"] = null;
         }
         else {
-            axios_1.default.defaults.headers["X-WebBrowser-Authentication"] = "Forbidden";
+            this.axios.defaults.headers["X-WebBrowser-Authentication"] = "Forbidden";
         }
     }
     get clientCredentials() {

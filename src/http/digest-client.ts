@@ -10,7 +10,7 @@ import { sha256 } from "js-sha256";
 import { sha512, sha512_256 } from "js-sha512";
 /**Http认证客户端静态 */
 export class AxiosDigestInstance {
-  private readonly axios: AxiosInstance | AxiosStatic;
+  protected readonly axios: AxiosInstance | AxiosStatic;
   private username: string;
   private passwd: string;
   private webBrowserAuth: boolean;
@@ -33,9 +33,9 @@ export class AxiosDigestInstance {
     this.passwd = credentials.passwd;
     this.webBrowserAuth = credentials.webBrowserAuth;
     if (this.webBrowserAuth === false) {
-      axios.defaults.headers["X-WebBrowser-Authentication"] = null;
+      this.axios.defaults.headers["X-WebBrowser-Authentication"] = null;
     } else {
-      axios.defaults.headers["X-WebBrowser-Authentication"] = "Forbidden";
+      this.axios.defaults.headers["X-WebBrowser-Authentication"] = "Forbidden";
     }
   }
 

@@ -1,7 +1,7 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosStatic, AxiosResponse } from "axios";
 import { ClientCredentials } from "./credentials";
 export declare class AxiosDigestInstance {
-    private readonly axios;
+    protected readonly axios: AxiosInstance | AxiosStatic;
     private username;
     private passwd;
     private webBrowserAuth;
