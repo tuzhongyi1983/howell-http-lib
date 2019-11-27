@@ -287,7 +287,7 @@ export class AxiosDigestInstance {
     if (config === undefined) {
       return { headers: { Authorization: auth } };
     }
-    config.headers.Authorization = auth;
+    config.headers["Authorization"] = auth;
     return config;
   }
 }
