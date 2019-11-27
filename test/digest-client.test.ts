@@ -26,6 +26,6 @@ const client = new AxiosDigestInstance(
   })
 );
 test("MD5", async () => {
-  const a = await client.get(`${url}`);
+  const a = await client.get(`${url}`, { timeout: 10000 });
   expect(a.status).toBe(200);
 });

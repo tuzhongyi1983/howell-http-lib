@@ -284,7 +284,7 @@ export class AxiosDigestInstance {
       .map(v => `${v}="${dh[v]}"`)
       .join(", ")}`;
 
-    if (config === undefined) {
+    if (config === undefined || config.headers === undefined) {
       return { headers: { Authorization: auth } };
     }
     config.headers["Authorization"] = auth;
